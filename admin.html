@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم والإدارة | iPHONK Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة تصدير ملفات الإكسيل XLSX -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <style>
+        :root {
+            --bg-body: #f4f5f7;
+            --surface-card: #ffffff;
+            --border-light: rgba(0, 0, 0, 0.08);
+            --primary-accent: #0071e3;
+            --primary-gradient: linear-gradient(135deg, #0071e3 0%, #005bb5 100%);
+            --text-main: #1d1d1f;
+            --text-muted: #86868b;
+            --text-sub: #515154;
+            --success-bg: #e6f4ea;
+            --success-text: #1e8e3e;
+            --radius-xl: 24px;
+            --radius-md: 12px;
+            --shadow-subtle: 0 4px 24px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.07);
+            --font-ar: 'Cairo', sans-serif;
+            --font-en: 'Inter', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-body); color: var(--text-main); font-family: var(--font-ar); line-height: 1.5; padding-bottom: 60px; }
+
+        .top-navbar {
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-light);
+            position: sticky; top: 0; z-index: 100; padding: 12px 0;
+        }
+        .nav-content { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+        .brand-logo { display: flex; align-items: center; gap: 16px; }
+        .brand-logo img { height: 38px; }
+        .badge-admin { background: rgba(0, 113, 227, 0.08); color: var(--primary-accent); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .nav-actions { display: flex; gap: 10px; }
+
+        .btn-secondary {
+            background: var(--surface-card); border: 1px solid var(--border-light); color: var(--text-main);
+            padding: 8px 16px; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; text-decoration: none; display: flex; align-items: center; gap: 6px; font-family: var(--font-ar);
+        }
+        .btn-secondary:hover { border-color: var(--primary-accent); color: var(--primary-accent); }
+
+        .main-container { max-width: 1200px; margin: 32px auto 0; padding: 0 24px; display: flex; flex-direction: column; gap: 28px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        @media (max-width: 850px) { .stats-grid { grid-template-columns: 1fr; } }
+
+        .stat-card {
+            background: var(--surface-card); border: 1px solid var(--border-light); border-radius: var(--radius-xl);
+            padding: 24px; box-shadow: var(--shadow-subtle); position: relative; overflow: hidden;
+        }
+        .stat-card::before { content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: var(--primary-accent); }
+        .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .stat-label { font-size: 0.88rem; color: var(--text-muted); font-weight: 600; }
+        .stat-value { font-size: 1.85rem; font-weight: 800; font-family: var(--font-en); }
+        .highlight-text { font-size: 1.2rem; color: var(--primary-accent); font-weight: 700; }
+
+        .dashboard-section { background: var(--surface-card); border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 28px; box-shadow: var(--shadow-subtle); }
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+        .section-title { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+
+        .table-wrapper { width: 100%; overflow-x: auto; }
+        .modern-table { width: 100%; border-collapse: collapse; text-align: right; white-space: nowrap; }
+        .modern-table th { background: #fafafa; color: var(--text-muted); font-size: 0.82rem; font-weight: 700; padding: 14px 18px; border-bottom: 1px solid var(--border-light); }
+        .modern-table td { padding: 16px 18px; font-size: 0.92rem; border-bottom: 1px solid rgba(0, 0, 0, 0.04); font-weight: 600; }
+        .modern-table tbody tr:hover { background: rgba(0, 113, 227, 0.015); }
+
+        .booking-id { font-family: var(--font-en); background: #f0f4f8; padding: 4px 8px; border-radius: 6px; font-size: 0.85rem; color: #334155; font-weight: 700; }
+        .num-en { font-family: var(--font-en); }
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; background: var(--success-bg); color: var(--success-text); }
+        
+        .btn-clear { background: #ff3b3015; color: #ff3b30; border: 1px solid #ff3b3033; }
+        .btn-clear:hover { background: #ff3b30; color: #fff; }
+    </style>
+</head>
+<body>
+
+    <header class="top-navbar">
+        <div class="nav-content">
+            <div class="brand-logo">
+                <img src="logo.png" alt="iPHONK" onerror="this.style.display='none'">
+                <span class="badge-admin">Admin Dashboard</span>
+            </div>
+            <div class="nav-actions">
+                <a href="https://elmon3sh.github.io/iphonk/" target="_blank" class="btn-secondary">زيارة موقع الحجز 🌐</a>
+                <button class="btn-secondary" onclick="exportToExcel()">تصدير البيانات 📥</button>
+                <button class="btn-secondary btn-clear" onclick="clearData()">تفريغ البيانات 🗑️</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- الإحصائيات -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header"><span class="stat-label">الطراز الأكثر طلباً</span><span>🔥</span></div>
+                <div class="highlight-text" id="mostRequestedModel">لا يوجد بيانات بعد</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header"><span class="stat-label">إجمالي العربون المحصل</span><span>💳</span></div>
+                <div class="stat-value" id="totalDepositSum">EGP 0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header"><span class="stat-label">إجمالي الحجوزات المسجلة</span><span>📦</span></div>
+                <div class="stat-value" id="totalBookingsCount">0</div>
+            </div>
+        </div>
+
+        <!-- الجدول -->
+        <section class="dashboard-section">
+            <div class="section-header">
+                <h2 class="section-title"><span>📋</span> سجل الحجوزات المسجلة</h2>
+                <button class="btn-secondary" onclick="loadDashboardData()">تحديث مباشر 🔄</button>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="modern-table" id="bookingsTable">
+                    <thead>
+                        <tr>
+                            <th>رقم الحجز</th>
+                            <th>اسم العميل</th>
+                            <th>رقم الهاتف</th>
+                            <th>الطراز والمواصفات</th>
+                            <th>السعر الإجمالي</th>
+                            <th>العربون المدفوع</th>
+                            <th>الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function loadDashboardData() {
+            let bookings = JSON.parse(localStorage.getItem('iphonk_bookings')) || [];
+            const tbody = document.querySelector('#bookingsTable tbody');
+            tbody.innerHTML = '';
+            
+            if(bookings.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: var(--text-muted);">لا توجد حجوزات مسجلة حتى الآن</td></tr>`;
+                document.getElementById('totalBookingsCount').textContent = "0";
+                document.getElementById('totalDepositSum').textContent = "EGP 0";
+                document.getElementById('mostRequestedModel').textContent = "-";
+                return;
+            }
+
+            let totalDepositSum = 0;
+            let modelCounts = {};
+
+            bookings.forEach(b => {
+                let depNum = parseInt(String(b.deposit).replace(/[^0-9]/g, '')) || 0;
+                totalDepositSum += depNum;
+                modelCounts[b.model] = (modelCounts[b.model] || 0) + 1;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="booking-id">${b.id}</span></td>
+                    <td>${b.name}</td>
+                    <td class="num-en">${b.phone}</td>
+                    <td>${b.model}</td>
+                    <td class="num-en">${b.price}</td>
+                    <td class="num-en" style="color: var(--primary-accent);">${b.deposit}</td>
+                    <td><span class="status-badge">● ${b.status || 'مؤكد'}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('totalBookingsCount').textContent = bookings.length;
+            document.getElementById('totalDepositSum').textContent = `EGP ${totalDepositSum.toLocaleString()}`;
+
+            let mostRequested = '';
+            let maxCount = 0;
+            for (let m in modelCounts) {
+                if (modelCounts[m] > maxCount) {
+                    maxCount = modelCounts[m];
+                    mostRequested = m;
+                }
+            }
+            document.getElementById('mostRequestedModel').textContent = mostRequested;
+        }
+
+        function exportToExcel() {
+            const table = document.getElementById('bookingsTable');
+            const workbook = XLSX.utils.table_to_book(table, { sheet: "الحجوزات" });
+            const today = new Date();
+            const dateStr = today.toISOString().split('T')[0];
+            XLSX.writeFile(workbook, `سجل_الحجوزات_iPHONK_${dateStr}.xlsx`);
+        }
+
+        function clearData() {
+            if(confirm('هل أنت تأكد من رغبتك في مسح كافة الحجوزات المسجلة؟')) {
+                localStorage.removeItem('iphonk_bookings');
+                loadDashboardData();
+            }
+        }
+
+        // تحديث البيانات فور تحميل الصفحة وكل 5 ثوانٍ تلقائياً
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDashboardData();
+            setInterval(loadDashboardData, 5000); 
+        });
+    </script>
+</body>
+</html>
