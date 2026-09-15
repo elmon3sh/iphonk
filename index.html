@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز iPhone 18 Pro مسبقاً | Apple</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f5f5f7;
+            --card-bg: #ffffff;
+            --border-color: #d2d2d7;
+            --accent-color: #0071e3;
+            --accent-hover: #0077ed;
+            --text-color: #1d1d1f;
+            --text-secondary: #86868b;
+            --radius: 18px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        /* Header / Navbar */
+        header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 14px 0;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        .header-logo {
+            max-height: 67px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .pre-order-text {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #86868b;
+            margin-top: 4px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        /* Product Preview */
+        .product-preview {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            text-align: center;
+        }
+
+        /* حل مشكلة السكرول والثبات على الموبايل */
+        @media (max-width: 850px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                margin: 20px auto;
+            }
+
+            .product-preview {
+                position: relative !important;
+                top: 0 !important;
+            }
+
+            .phone-mockup {
+                max-width: 280px !important;
+                height: 380px !important;
+            }
+        }
+
+        .phone-mockup {
+            width: 100%;
+            max-width: 380px;
+            height: 480px;
+            margin: 0 auto 20px;
+            border-radius: 36px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 36px;
+            transition: opacity 0.3s ease;
+        }
+
+        .badge-new {
+            color: var(--accent-color);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        /* Form Controls */
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-section {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1d1d1f;
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 12px;
+        }
+
+        .option-card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+
+        .option-card:hover {
+            border-color: #86868b;
+        }
+
+        .option-card.active {
+            border: 2px solid var(--accent-color);
+            background: rgba(0, 113, 227, 0.03);
+        }
+
+        .option-card input[type="radio"] {
+            display: none;
+        }
+
+        .color-dot {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            border: 1px solid rgba(0,0,0,0.15);
+        }
+
+        /* Input Fields */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #fbfbfd;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent-color);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+        }
+
+        .price-inputs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* Remaining Price Box */
+        .price-summary-box {
+            background: #f8fbff;
+            border: 1px solid #d0e4ff;
+            padding: 14px 16px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        /* ----------------------------------
+           تصميم كارت الحجز
+        ---------------------------------- */
+        .reservation-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--radius);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-top-banner {
+            background: linear-gradient(135deg, #1d1d1f 0%, #343438 100%);
+            color: #ffffff;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .apple-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .apple-icon {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff;
+        }
+
+        .ticket-number {
+            font-size: 0.9rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .card-body-content {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        @media (max-width: 600px) {
+            .card-body-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .detail-item {
+            background: #fbfbfd;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #f0f0f5;
+        }
+
+        .detail-item.full-width {
+            grid-column: span 2;
+        }
+
+        .detail-item .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: block;
+        }
+
+        .detail-item .value {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1d1d1f;
+        }
+
+        .card-image-side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            background: #fbfbfd;
+            border: 1px solid #f0f0f5;
+            border-radius: 14px;
+            padding: 10px;
+            text-align: center;
+            height: 100%;
+            min-height: 250px;
+            overflow: hidden;
+        }
+
+        .card-phone-preview {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 240px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 10px;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+            margin-bottom: 6px;
+        }
+
+        .card-footer-strip {
+            background: #f5f5f7;
+            border-top: 1px dashed #d2d2d7;
+            padding: 12px 24px;
+            font-size: 0.8rem;
+            color: #6e6e73;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-submit {
+            width: calc(100% - 48px);
+            margin: 0 24px 24px 24px;
+            padding: 16px;
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.99);
+        }
+
+        /* ----------------------------------------------------
+           إعدادات الطباعة الشاملة
+        ---------------------------------------------------- */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 15mm;
+            }
+
+            body > *:not(.print-wrapper) {
+                display: none !important;
+            }
+
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .print-wrapper {
+                display: block !important;
+                width: 100%;
+                max-width: 800px;
+                margin: 0 auto;
+                direction: rtl;
+            }
+
+            .print-header {
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border-bottom: 2px solid #1d1d1f;
+                padding-bottom: 15px;
+                margin-bottom: 25px;
+            }
+
+            .print-header img {
+                max-height: 75px;
+                width: auto;
+                margin-bottom: 6px;
+            }
+
+            .print-header-sub {
+                font-size: 0.85rem;
+                font-weight: 800;
+                letter-spacing: 2px;
+                color: #555;
+            }
+
+            .reservation-card {
+                box-shadow: none !important;
+                border: 2px solid #1d1d1f !important;
+                border-radius: 16px !important;
+                page-break-inside: avoid;
+            }
+
+            .card-top-banner {
+                background: #1d1d1f !important;
+                color: #ffffff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .card-body-content {
+                padding: 24px;
+                grid-template-columns: 1.2fr 1fr !important;
+                gap: 20px;
+            }
+
+            .card-image-side {
+                height: 100% !important;
+                background: #fbfbfd !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .card-phone-preview {
+                max-height: 250px !important;
+                object-fit: cover !important;
+            }
+
+            .btn-submit {
+                display: none !important;
+            }
+        }
+
+        .print-wrapper {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <header>
+        <div class="nav-container">
+            <img src="logo.png" alt="iPhone Logo" class="header-logo">
+            <span class="pre-order-text">PRE-ORDER</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- قسم المعاينة -->
+        <section class="product-preview">
+            <div class="badge-new">جديد بالكامل</div>
+            <h1 style="font-size: 2.2rem; margin-bottom: 20px; color: #1d1d1f;">تصميم متطور. أداء لا يُقهر.</h1>
+            <div class="phone-mockup" id="phoneMockup">
+                <img id="mainProductImg" src="iphone-18-pro-finish-select-202609-6-9inch-burgundy.jpg" alt="iPhone 18 Pro" class="product-img">
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">شريحة A20 Bionic | شاشة ProMotion | كاميرا احترافية</p>
+        </section>
+
+        <!-- استمارة الحجز المسبق -->
+        <section class="booking-form">
+            
+            <!-- اختيارات الطراز -->
+            <div class="form-section">
+                <div class="section-title">1. اختر الطراز</div>
+                <div class="options-grid">
+                    <label class="option-card active" onclick="selectOption(this, 'model', 'iPhone 18 Pro (6.3 بوصة)', null, 99990)">
+                        <input type="radio" name="model" value="iPhone 18 Pro" checked>
+                        <strong>iPhone 18 Pro</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">شاشة 6.3 بوصة</div>
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 'model', 'iPhone 18 Pro Max (6.9 بوصة)', null, 107500)">
+                        <input type="radio" name="model" value="iPhone 18 Pro Max">
+                        <strong>iPhone 18 Pro Max</strong>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">شاشة 6.9 بوصة</div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- اختيارات اللون -->
+            <div class="form-section">
+                <div class="section-title">2. اختر اللون</div>
+                <div class="options-grid">
+                    <label class="option-card active" onclick="selectOption(this, 'color', 'Burgundy', 'iphone-18-pro-finish-select-202609-6-9inch-burgundy.jpg')">
+                        <input type="radio" name="color" value="Burgundy" checked>
+                        <div class="color-dot" style="background: #581825;"></div>
+                        <span>Burgundy</span>
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 'color', 'Glacier', 'iphone-18-pro-finish-select-202609-6-9inch-glacier.jpg')">
+                        <input type="radio" name="color" value="Glacier">
+                        <div class="color-dot" style="background: #d4e5ed;"></div>
+                        <span>Glacier</span>
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 'color', 'Silver', 'iphone-18-pro-finish-select-202609-6-9inch-silver.jpg')">
+                        <input type="radio" name="color" value="Silver">
+                        <div class="color-dot" style="background: #e2e4e1;"></div>
+                        <span>Silver</span>
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 'color', 'Black', 'iphone-18-pro-finish-select-202609-6-9inch-black.jpg')">
+                        <input type="radio" name="color" value="Black">
+                        <div class="color-dot" style="background: #1c1d1f;"></div>
+                        <span>Black</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- السعة التخزينية -->
+            <div class="form-section">
+                <div class="section-title">3. اختر السعة التخزينية</div>
+                <div class="options-grid">
+                    <label class="option-card active" onclick="selectOption(this, 'storage', '256 GB')">
+                        <input type="radio" name="storage" value="256GB" checked>
+                        <strong>256 GB</strong>
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 'storage', '512 GB')">
+                        <input type="radio" name="storage" value="512GB">
+                        <strong>512 GB</strong>
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 'storage', '1 TB')">
+                        <input type="radio" name="storage" value="1TB">
+                        <strong>1 TB</strong>
+                    </label>
+                </div>
+            </div>
+
+            <!-- بيانات العميل والماليات -->
+            <div class="form-section">
+                <div class="section-title">4. البيانات الشخصية والقيمة المادية</div>
+                <div class="input-group">
+                    <input type="text" class="input-field" id="fullName" placeholder="الاسم بالكامل" oninput="updateCardDetails()" required>
+                    <input type="tel" class="input-field" id="phoneNumber" placeholder="رقم الهاتف (مثل: 010xxxxxxx)" oninput="updateCardDetails()" required>
+                    <input type="email" class="input-field" id="email" placeholder="البريد الإلكتروني" oninput="updateCardDetails()" required>
+                    
+                    <div class="price-inputs-grid">
+                        <div>
+                            <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">قيمة الهاتف (EGP):</label>
+                            <input type="number" class="input-field" id="phonePriceInput" placeholder="أدخل السعر" value="99990" oninput="updateCardDetails()">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">قيمة العربون (EGP):</label>
+                            <input type="number" class="input-field" id="depositInput" placeholder="أدخل العربون" value="10000" oninput="updateCardDetails()">
+                        </div>
+                    </div>
+
+                    <div class="price-summary-box">
+                        <span>المبلغ المتبقي عند الاستلام:</span>
+                        <strong id="formRemainingPrice" style="font-size: 1.1rem;">89,990 EGP</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- كارت الحجز المعروض بالموقع -->
+            <div class="reservation-card" id="reservationCard">
+                <div class="card-top-banner">
+                    <div class="apple-brand">
+                        <svg class="apple-icon" viewBox="0 0 170 170">
+                            <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.84.13-9.72-1.93-14.64-6.18-3.69-3.21-7.62-7.96-11.79-14.24-8.87-13.38-15.35-27.91-19.46-43.58-4.11-15.67-6.17-30.13-6.17-43.38 0-16.14 3.99-29.61 11.97-40.41 7.98-10.8 17.89-16.32 29.73-16.57 4.96.12 10.32 1.25 16.08 3.39 5.76 2.14 9.77 3.26 12.03 3.38 2.37 0 6.64-1.22 12.82-3.66 6.18-2.44 11.64-3.56 16.38-3.37 12.4.62 22.42 5.37 30.06 14.25-11.1 6.72-16.51 16.12-16.24 28.2 0 9.8 3.75 18.06 11.25 24.78 7.5 6.72 16.28 10.36 26.33 10.92-2.3 6.96-5.46 14.75-9.49 23.37zm-26.69-106.67c0-6.72 2.37-13.19 7.12-19.41 4.75-6.22 10.9-10.35 17.44-12.39.24 1.25.37 2.38.37 3.38 0 6.84-2.47 13.38-7.41 19.62-4.94 6.24-11.05 10.28-17.33 12.12-.08-.85-.19-2.09-.19-3.32z"/>
+                        </svg>
+                        <span style="font-weight: 700; font-size: 1.1rem; letter-spacing: 1px;">iPhone Pre-Order Pass</span>
+                    </div>
+                    <span class="ticket-number" id="ticketNumber">#IP18-8492</span>
+                </div>
+
+                <div class="card-body-content">
+                    <div class="card-details-grid">
+                        <div class="detail-item">
+                            <span class="label">اسم العميل</span>
+                            <span class="value" id="cardName">---</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">رقم الهاتف</span>
+                            <span class="value" id="cardPhone">---</span>
+                        </div>
+                        <div class="detail-item full-width">
+                            <span class="label">البريد الإلكتروني</span>
+                            <span class="value" id="cardEmail">---</span>
+                        </div>
+                        <div class="detail-item full-width">
+                            <span class="label">الطراز المختارات</span>
+                            <span class="value" id="cardModel">iPhone 18 Pro (6.3 بوصة)</span>
+                        </div>
+                        <div class="detail-item full-width">
+                            <span class="label">اللون والسعة التخزينية</span>
+                            <span class="value" id="cardColorStorage">Burgundy - 256 GB</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">إجمالي السعر</span>
+                            <span class="value" id="cardFullPrice">99,990 EGP</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">العربون المدفوع</span>
+                            <span class="value" id="cardDepositPrice" style="color: #27ae60;">10,000 EGP</span>
+                        </div>
+                        <div class="detail-item full-width" style="background: #eef7ff; border-color: #c0d8f6;">
+                            <span class="label" style="color: var(--accent-color);">المبلغ المتبقي للدفعة الأخيرة</span>
+                            <span class="value" id="cardRemainingPrice" style="color: var(--accent-color); font-size: 1.15rem;">89,990 EGP</span>
+                        </div>
+                    </div>
+
+                    <div class="card-image-side">
+                        <img id="cardProductImg" src="iphone-18-pro-finish-select-202609-6-9inch-burgundy.jpg" alt="Selected iPhone" class="card-phone-preview">
+                        <span id="cardImgLabel" style="font-size: 0.9rem; font-weight: 700; color: #1d1d1f;">Burgundy</span>
+                    </div>
+                </div>
+
+                <div class="card-footer-strip">
+                    <span>إيصال حجز مالي رسمي ومسجل</span>
+                    <span>Apple Authorized Reseller</span>
+                </div>
+
+                <button type="button" class="btn-submit" onclick="printReservationCard()">
+                    🖨️ تأكيد وحفظ كارت الحجز (طباعة / PDF)
+                </button>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- حاوية الطباعة الخاصة -->
+    <div class="print-wrapper" id="printArea">
+        <div class="print-header">
+            <img src="logo.png" alt="Logo">
+            <span class="print-header-sub">PRE-ORDER OFFICIAL RECEIPT</span>
+        </div>
+        <div id="printCardContainer"></div>
+    </div>
+
+    <script>
+        let selectedModel = 'iPhone 18 Pro (6.3 بوصة)';
+        let selectedColor = 'Burgundy';
+        let selectedStorage = '256 GB';
+        let currentImgSrc = 'iphone-18-pro-finish-select-202609-6-9inch-burgundy.jpg';
+
+        function selectOption(element, category, value, imgSrc = null, price = null) {
+            const parent = element.parentElement;
+            const cards = parent.querySelectorAll('.option-card');
+            cards.forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+
+            const radio = element.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+
+            if (category === 'model') {
+                selectedModel = value;
+                if (price !== null) {
+                    document.getElementById('phonePriceInput').value = price;
+                }
+            } else if (category === 'storage') {
+                selectedStorage = value;
+            } else if (category === 'color') {
+                selectedColor = value;
+                if (imgSrc) {
+                    currentImgSrc = imgSrc;
+                    const mainImg = document.getElementById('mainProductImg');
+                    mainImg.style.opacity = '0';
+                    setTimeout(() => {
+                        mainImg.src = imgSrc;
+                        mainImg.style.opacity = '1';
+                    }, 150);
+                }
+            }
+
+            updateCardDetails();
+        }
+
+        function updateCardDetails() {
+            const name = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phoneNumber').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            const price = parseFloat(document.getElementById('phonePriceInput').value) || 0;
+            const deposit = parseFloat(document.getElementById('depositInput').value) || 0;
+            const remaining = Math.max(0, price - deposit);
+
+            const formattedPrice = price.toLocaleString('en-US') + ' EGP';
+            const formattedDeposit = deposit.toLocaleString('en-US') + ' EGP';
+            const formattedRemaining = remaining.toLocaleString('en-US') + ' EGP';
+
+            document.getElementById('formRemainingPrice').textContent = formattedRemaining;
+
+            document.getElementById('cardName').textContent = name || '---';
+            document.getElementById('cardPhone').textContent = phone || '---';
+            document.getElementById('cardEmail').textContent = email || '---';
+            document.getElementById('cardModel').textContent = selectedModel;
+            document.getElementById('cardColorStorage').textContent = `${selectedColor} - ${selectedStorage}`;
+            
+            document.getElementById('cardFullPrice').textContent = formattedPrice;
+            document.getElementById('cardDepositPrice').textContent = formattedDeposit;
+            document.getElementById('cardRemainingPrice').textContent = formattedRemaining;
+
+            document.getElementById('cardProductImg').src = currentImgSrc;
+            document.getElementById('cardImgLabel').textContent = selectedColor;
+        }
+
+        function printReservationCard() {
+            const name = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phoneNumber').value.trim();
+
+            if (!name || !phone) {
+                alert('يرجى كتابة الاسم ورقم الهاتف أولاً لإصدار كارت الحجز.');
+                return;
+            }
+
+            const reservationCardClone = document.getElementById('reservationCard').cloneNode(true);
+            const printCardContainer = document.getElementById('printCardContainer');
+            printCardContainer.innerHTML = '';
+            printCardContainer.appendChild(reservationCardClone);
+
+            window.print();
+        }
+
+        document.getElementById('ticketNumber').textContent = '#IP18-' + Math.floor(1000 + Math.random() * 9000);
+        updateCardDetails();
+    </script>
+</body>
+</html>
