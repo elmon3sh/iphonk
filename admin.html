@@ -130,7 +130,7 @@
         .search-input:focus { background: #ffffff; border-color: var(--primary-accent); }
         .search-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: var(--text-muted); pointer-events: none; }
 
-        /* --- جدول الحجوزات (تم تصغير حجم الخط والمسافات هنا) --- */
+        /* --- جدول الحجوزات --- */
         .table-wrapper { width: 100%; overflow-x: auto; }
         .modern-table { width: 100%; border-collapse: collapse; text-align: right; white-space: nowrap; }
         .modern-table th { background: #fafafa; color: var(--text-muted); font-size: 0.72rem; font-weight: 700; padding: 6px 10px; border-bottom: 1px solid var(--border-light); }
@@ -457,6 +457,28 @@
             });
         }
 
+        // دالة مساعدة لتحويل الختم الزمني (Timestamp) أو النصوص إلى تاريخ صحيح
+        function formatBookingDate(rawDate) {
+            if (!rawDate) return 'غير متوفر';
+            
+            // إذا كان الخزن عبارة عن أرقام (Timestamp)
+            let num = Number(rawDate);
+            if (!isNaN(num) && num > 1000000000) {
+                let d = new Date(num);
+                if (!isNaN(d.getTime())) {
+                    let year = d.getFullYear();
+                    let month = String(d.getMonth() + 1).padStart(2, '0');
+                    let day = String(d.getDate()).padStart(2, '0');
+                    let hours = String(d.getHours()).padStart(2, '0');
+                    let minutes = String(d.getMinutes()).padStart(2, '0');
+                    return `${year}-${month}-${day} | ${hours}:${minutes}`;
+                }
+            }
+            
+            // إذا كان مخزن كنص عادي مسبقاً
+            return rawDate;
+        }
+
         function listenToDashboardData() {
             database.ref('orders').on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -491,7 +513,9 @@
                     const priceFormatted = priceNum.toLocaleString('en-US') + ' EGP';
                     const depositFormatted = depNum.toLocaleString('en-US') + ' EGP';
                     const remainingFormatted = remainingNum.toLocaleString('en-US') + ' EGP';
-                    const bookingDate = b.date || b.timestamp || 'غير متوفر';
+                    
+                    // استخدام دالة التنسيق الجديدة للتاريخ
+                    const bookingDate = formatBookingDate(b.date || b.timestamp);
 
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
