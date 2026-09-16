@@ -23,98 +23,536 @@
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; padding-bottom: 60px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
 
-        header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(0, 0, 0, 0.1); padding: 14px 0; }
-        .nav-container { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 20px; }
-        .header-logo { max-height: 67px; width: auto; object-fit: contain; display: block; }
-        .pre-order-text { font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #86868b; margin-top: 4px; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
 
-        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
-        .product-preview { position: sticky; top: 100px; height: fit-content; text-align: center; }
+        /* Header / Navbar */
+        header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 14px 0;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .logo-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .header-logo {
+            max-height: 48px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .pre-order-text {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #86868b;
+            margin-top: 2px;
+        }
+
+        /* Admin Button */
+        .admin-nav-btn {
+            position: absolute;
+            left: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 113, 227, 0.08);
+            color: var(--accent-color);
+            border: 1px solid rgba(0, 113, 227, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .admin-nav-btn:hover {
+            background: var(--accent-color);
+            color: #ffffff;
+            border-color: var(--accent-color);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        /* Product Preview */
+        .product-preview {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            text-align: center;
+        }
 
         @media (max-width: 850px) {
-            .container { grid-template-columns: 1fr; gap: 30px; margin: 20px auto; }
-            .product-preview { position: relative !important; top: 0 !important; }
-            .phone-mockup { max-width: 280px !important; height: 380px !important; }
+            .container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                margin: 20px auto;
+            }
+
+            .product-preview {
+                position: relative !important;
+                top: 0 !important;
+            }
+
+            .phone-mockup {
+                max-width: 280px !important;
+                height: 380px !important;
+            }
         }
 
-        .phone-mockup { width: 100%; max-width: 380px; height: 480px; margin: 0 auto 20px; border-radius: 36px; background: #ffffff; border: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.08); transition: all 0.4s ease; overflow: hidden; }
-        .product-img { width: 100%; height: 100%; object-fit: cover; border-radius: 36px; transition: opacity 0.3s ease; }
-        .badge-new { color: var(--accent-color); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .phone-mockup {
+            width: 100%;
+            max-width: 380px;
+            height: 480px;
+            margin: 0 auto 20px;
+            border-radius: 36px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
 
-        .booking-form { display: flex; flex-direction: column; gap: 24px; }
-        .form-section { background: var(--card-bg); border: 1px solid rgba(0, 0, 0, 0.08); padding: 24px; border-radius: var(--radius); box-shadow: var(--shadow); }
-        .section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; color: #1d1d1f; }
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 36px;
+            transition: opacity 0.3s ease;
+        }
 
-        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; }
-        .option-card { border: 1px solid var(--border-color); border-radius: 12px; padding: 14px 10px; cursor: pointer; text-align: center; transition: all 0.2s ease; background: #fff; }
-        .option-card:hover { border-color: #86868b; }
-        .option-card.active { border: 2px solid var(--accent-color); background: rgba(0, 113, 227, 0.03); }
-        .option-card input[type="radio"] { display: none; }
-        .color-dot { width: 26px; height: 26px; border-radius: 50%; margin: 0 auto 8px; border: 1px solid rgba(0,0,0,0.15); }
+        .badge-new {
+            color: var(--accent-color);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
 
-        .input-group { display: flex; flex-direction: column; gap: 14px; }
-        .input-field { width: 100%; padding: 14px 16px; border-radius: 12px; background: #fbfbfd; border: 1px solid var(--border-color); color: var(--text-color); font-size: 0.95rem; outline: none; transition: all 0.2s; }
-        .input-field:focus { border-color: var(--accent-color); background: #fff; box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15); }
+        /* Form Controls */
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
 
-        .price-inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .price-summary-box { background: #f8fbff; border: 1px solid #d0e4ff; padding: 14px 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--accent-color); }
+        .form-section {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
 
-        .reservation-card { background: #ffffff; border: 1px solid #e0e0e0; border-radius: var(--radius); box-shadow: 0 15px 35px rgba(0,0,0,0.06); overflow: hidden; position: relative; }
-        .card-top-banner { background: linear-gradient(135deg, #1d1d1f 0%, #343438 100%); color: #ffffff; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; }
-        .apple-brand { display: flex; align-items: center; gap: 10px; }
-        .apple-icon { width: 24px; height: 24px; fill: #ffffff; }
-        .ticket-number { font-size: 0.9rem; font-weight: 700; background: rgba(255, 255, 255, 0.15); color: #fff; padding: 4px 12px; border-radius: 20px; backdrop-filter: blur(5px); }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #1d1d1f;
+        }
 
-        .card-body-content { padding: 24px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: stretch; }
-        @media (max-width: 600px) { .card-body-content { grid-template-columns: 1fr; } }
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 12px;
+        }
 
-        .card-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .detail-item { background: #fbfbfd; padding: 10px 14px; border-radius: 10px; border: 1px solid #f0f0f5; }
-        .detail-item.full-width { grid-column: span 2; }
-        .detail-item .label { font-size: 0.75rem; color: var(--text-secondary); display: block; }
-        .detail-item .value { font-size: 0.95rem; font-weight: 700; color: #1d1d1f; }
+        .option-card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
 
-        .card-image-side { display: flex; flex-direction: column; align-items: center; justify-content: space-between; background: #fbfbfd; border: 1px solid #f0f0f5; border-radius: 14px; padding: 10px; text-align: center; height: 100%; min-height: 250px; overflow: hidden; }
-        .card-phone-preview { width: 100%; height: 100%; max-width: 100%; max-height: 240px; object-fit: cover; object-position: center; border-radius: 10px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1)); margin-bottom: 6px; }
+        .option-card:hover {
+            border-color: #86868b;
+        }
 
-        .card-footer-strip { background: #f5f5f7; border-top: 1px dashed #d2d2d7; padding: 12px 24px; font-size: 0.8rem; color: #6e6e73; display: flex; justify-content: space-between; align-items: center; }
+        .option-card.active {
+            border: 2px solid var(--accent-color);
+            background: rgba(0, 113, 227, 0.03);
+        }
 
-        .btn-submit { width: calc(100% - 48px); margin: 0 24px 24px 24px; padding: 16px; background: var(--accent-color); color: #fff; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-submit:hover { background: var(--accent-hover); }
-        .btn-submit:active { transform: scale(0.99); }
+        .option-card input[type="radio"] {
+            display: none;
+        }
 
+        .color-dot {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            border: 1px solid rgba(0,0,0,0.15);
+        }
+
+        /* Input Fields */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #fbfbfd;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent-color);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+        }
+
+        .price-inputs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* Remaining Price Box */
+        .price-summary-box {
+            background: #f8fbff;
+            border: 1px solid #d0e4ff;
+            padding: 14px 16px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        /* Reservation Card */
+        .reservation-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--radius);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-top-banner {
+            background: linear-gradient(135deg, #1d1d1f 0%, #343438 100%);
+            color: #ffffff;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .apple-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .apple-icon {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff;
+        }
+
+        .ticket-number {
+            font-size: 0.9rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .card-body-content {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        @media (max-width: 600px) {
+            .card-body-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .detail-item {
+            background: #fbfbfd;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #f0f0f5;
+        }
+
+        .detail-item.full-width {
+            grid-column: span 2;
+        }
+
+        .detail-item .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: block;
+        }
+
+        .detail-item .value {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1d1d1f;
+        }
+
+        .card-image-side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            background: #fbfbfd;
+            border: 1px solid #f0f0f5;
+            border-radius: 14px;
+            padding: 10px;
+            text-align: center;
+            height: 100%;
+            min-height: 250px;
+            overflow: hidden;
+        }
+
+        .card-phone-preview {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 240px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 10px;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+            margin-bottom: 6px;
+        }
+
+        .card-footer-strip {
+            background: #f5f5f7;
+            border-top: 1px dashed #d2d2d7;
+            padding: 12px 24px;
+            font-size: 0.8rem;
+            color: #6e6e73;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Action Buttons Grid */
+        .action-buttons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 0 24px 24px 24px;
+        }
+
+        .btn-action-main {
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-confirm {
+            background: var(--accent-color);
+            color: #ffffff;
+        }
+
+        .btn-confirm:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-print {
+            background: #343438;
+            color: #ffffff;
+        }
+
+        .btn-print:hover {
+            background: #1d1d1f;
+        }
+
+        .btn-action-main:active {
+            transform: scale(0.98);
+        }
+
+        /* Print Settings */
         @media print {
-            @page { size: A4 portrait; margin: 15mm; }
-            body > *:not(.print-wrapper) { display: none !important; }
-            body { background: #ffffff !important; color: #000000 !important; padding: 0 !important; margin: 0 !important; }
-            .print-wrapper { display: block !important; width: 100%; max-width: 800px; margin: 0 auto; direction: rtl; }
-            .print-header { display: flex !important; flex-direction: column; align-items: center; justify-content: center; border-bottom: 2px solid #1d1d1f; padding-bottom: 15px; margin-bottom: 25px; }
-            .print-header img { max-height: 75px; width: auto; margin-bottom: 6px; }
-            .print-header-sub { font-size: 0.85rem; font-weight: 800; letter-spacing: 2px; color: #555; }
-            .reservation-card { box-shadow: none !important; border: 2px solid #1d1d1f !important; border-radius: 16px !important; page-break-inside: avoid; }
-            .card-top-banner { background: #1d1d1f !important; color: #ffffff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .card-body-content { padding: 24px; grid-template-columns: 1.2fr 1fr !important; gap: 20px; }
-            .card-image-side { height: 100% !important; background: #fbfbfd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .card-phone-preview { max-height: 250px !important; object-fit: cover !important; }
-            .btn-submit { display: none !important; }
+            @page {
+                size: A4 portrait;
+                margin: 15mm;
+            }
+
+            body > *:not(.print-wrapper) {
+                display: none !important;
+            }
+
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .print-wrapper {
+                display: block !important;
+                width: 100%;
+                max-width: 800px;
+                margin: 0 auto;
+                direction: rtl;
+            }
+
+            .print-header {
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border-bottom: 2px solid #1d1d1f;
+                padding-bottom: 15px;
+                margin-bottom: 25px;
+            }
+
+            .print-header img {
+                max-height: 75px;
+                width: auto;
+                margin-bottom: 6px;
+            }
+
+            .print-header-sub {
+                font-size: 0.85rem;
+                font-weight: 800;
+                letter-spacing: 2px;
+                color: #555;
+            }
+
+            .reservation-card {
+                box-shadow: none !important;
+                border: 2px solid #1d1d1f !important;
+                border-radius: 16px !important;
+                page-break-inside: avoid;
+            }
+
+            .card-top-banner {
+                background: #1d1d1f !important;
+                color: #ffffff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .card-body-content {
+                padding: 24px;
+                grid-template-columns: 1.2fr 1fr !important;
+                gap: 20px;
+            }
+
+            .card-image-side {
+                height: 100% !important;
+                background: #fbfbfd !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .card-phone-preview {
+                max-height: 250px !important;
+                object-fit: cover !important;
+            }
+
+            .action-buttons-grid {
+                display: none !important;
+            }
         }
 
-        .print-wrapper { display: none; }
+        .print-wrapper {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
+    <!-- Header -->
     <header>
         <div class="nav-container">
-            <img src="logo.png" alt="iPhone Logo" class="header-logo" onerror="this.style.display='none'">
-            <span class="pre-order-text">PRE-ORDER</span>
+            <a href="admin.html" class="admin-nav-btn">
+                ⚙️ Admin
+            </a>
+            <div class="logo-box">
+                <img src="logo.png" alt="iPhone Logo" class="header-logo">
+                <span class="pre-order-text">PRE-ORDER</span>
+            </div>
         </div>
     </header>
 
     <main class="container">
+        <!-- Preview Section -->
         <section class="product-preview">
             <div class="badge-new">جديد بالكامل</div>
             <h1 style="font-size: 2.2rem; margin-bottom: 20px; color: #1d1d1f;">تصميم متطور. أداء لا يُقهر.</h1>
@@ -124,7 +562,10 @@
             <p style="color: var(--text-secondary); font-size: 0.9rem;">شريحة A20 Bionic | شاشة ProMotion | كاميرا احترافية</p>
         </section>
 
+        <!-- Pre-Order Form -->
         <section class="booking-form">
+            
+            <!-- Model Selection -->
             <div class="form-section">
                 <div class="section-title">1. اختر الطراز</div>
                 <div class="options-grid">
@@ -141,6 +582,7 @@
                 </div>
             </div>
 
+            <!-- Color Selection -->
             <div class="form-section">
                 <div class="section-title">2. اختر اللون</div>
                 <div class="options-grid">
@@ -167,6 +609,7 @@
                 </div>
             </div>
 
+            <!-- Storage Selection -->
             <div class="form-section">
                 <div class="section-title">3. اختر السعة التخزينية</div>
                 <div class="options-grid">
@@ -185,6 +628,7 @@
                 </div>
             </div>
 
+            <!-- Customer Data & Financials -->
             <div class="form-section">
                 <div class="section-title">4. البيانات الشخصية والقيمة المادية</div>
                 <div class="input-group">
@@ -210,6 +654,7 @@
                 </div>
             </div>
 
+            <!-- Reservation Card Display -->
             <div class="reservation-card" id="reservationCard">
                 <div class="card-top-banner">
                     <div class="apple-brand">
@@ -218,7 +663,7 @@
                         </svg>
                         <span style="font-weight: 700; font-size: 1.1rem; letter-spacing: 1px;">iPhone Pre-Order Pass</span>
                     </div>
-                    <span class="ticket-number" id="ticketNumber">#IP18-8492</span>
+                    <span class="ticket-number" id="ticketNumber">#IP18-0000</span>
                 </div>
 
                 <div class="card-body-content">
@@ -268,33 +713,41 @@
                     <span>Apple Authorized Reseller</span>
                 </div>
 
-                <button type="button" class="btn-submit" id="submitBtn" onclick="submitAndPrintReservation()">
-                    🖨️ تأكيد وحفظ كارت الحجز (طباعة / PDF)
-                </button>
+                <!-- الأزرار المزدوجة منفصلة -->
+                <div class="action-buttons-grid">
+                    <button type="button" class="btn-action-main btn-confirm" onclick="confirmReservation()">
+                        تأكيد الحجز
+                    </button>
+                    <button type="button" class="btn-action-main btn-print" onclick="printReservationCard()">
+                        طباعة
+                    </button>
+                </div>
             </div>
+
         </section>
     </main>
 
+    <!-- Print Wrapper Container -->
     <div class="print-wrapper" id="printArea">
         <div class="print-header">
-            <img src="logo.png" alt="Logo" onerror="this.style.display='none'">
+            <img src="logo.png" alt="Logo">
             <span class="print-header-sub">PRE-ORDER OFFICIAL RECEIPT</span>
         </div>
         <div id="printCardContainer"></div>
     </div>
 
     <script>
-        // ⚠️ استبدل المفاتيح ببيانات مشروعك من Firebase Console
+        // إعدادات Firebase
         const firebaseConfig = {
-  apiKey: "AIzaSyD3a3CPO8pOzfbzAnxDoZcLt_jhVwMdxuI",
-  authDomain: "iphonk-df6b0.firebaseapp.com",
-  databaseURL: "https://iphonk-df6b0-default-rtdb.firebaseio.com",
-  projectId: "iphonk-df6b0",
-  storageBucket: "iphonk-df6b0.firebasestorage.app",
-  messagingSenderId: "878080840386",
-  appId: "1:878080840386:web:937f098bff921eb2a6a15b",
-  measurementId: "G-RDGY7ZVJMW"
-};
+            apiKey: "AIzaSyD3a3CPO8pOzfbzAnxDoZcLt_jhVwMdxuI",
+            authDomain: "iphonk-df6b0.firebaseapp.com",
+            databaseURL: "https://iphonk-df6b0-default-rtdb.firebaseio.com",
+            projectId: "iphonk-df6b0",
+            storageBucket: "iphonk-df6b0.firebasestorage.app",
+            messagingSenderId: "878080840386",
+            appId: "1:878080840386:web:937f098bff921eb2a6a15b",
+            measurementId: "G-RDGY7ZVJMW"
+        };
 
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
@@ -303,6 +756,12 @@
         let selectedColor = 'Burgundy';
         let selectedStorage = '256 GB';
         let currentImgSrc = 'iphone-18-pro-finish-select-202609-6-9inch-burgundy.jpg';
+
+        // دالة إنشاء رقم حجز متغير تلقائياً
+        function generateTicketNumber() {
+            const randomNum = Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('ticketNumber').textContent = '#IP18-' + randomNum;
+        }
 
         function selectOption(element, category, value, imgSrc = null, price = null) {
             const parent = element.parentElement;
@@ -365,25 +824,22 @@
             document.getElementById('cardImgLabel').textContent = selectedColor;
         }
 
-        function submitAndPrintReservation() {
+        // 1. دالة تأكيد الحجز في قاعدة البيانات فقط
+        function confirmReservation() {
             const name = document.getElementById('fullName').value.trim();
             const phone = document.getElementById('phoneNumber').value.trim();
             const email = document.getElementById('email').value.trim();
+            const price = document.getElementById('phonePriceInput').value.trim();
+            const deposit = document.getElementById('depositInput').value.trim();
+            const ticketNo = document.getElementById('ticketNumber').textContent;
 
             if (!name || !phone) {
                 alert('يرجى كتابة الاسم ورقم الهاتف أولاً لإصدار كارت الحجز.');
                 return;
             }
 
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.textContent = "جاري حفظ الحجز...";
-
-            const ticketNo = document.getElementById('ticketNumber').textContent;
-            const price = parseFloat(document.getElementById('phonePriceInput').value) || 0;
-            const deposit = parseFloat(document.getElementById('depositInput').value) || 0;
-
-            const bookingData = {
+            const newOrderRef = database.ref('orders').push();
+            newOrderRef.set({
                 ticketNo: ticketNo,
                 name: name,
                 phone: phone,
@@ -393,30 +849,37 @@
                 storage: selectedStorage,
                 price: price,
                 deposit: deposit,
-                timestamp: new Date().toISOString()
-            };
-
-            // حفظ الطلب في Firebase Database
-            database.ref('orders').push(bookingData)
-                .then(() => {
-                    const reservationCardClone = document.getElementById('reservationCard').cloneNode(true);
-                    const printCardContainer = document.getElementById('printCardContainer');
-                    printCardContainer.innerHTML = '';
-                    printCardContainer.appendChild(reservationCardClone);
-
-                    window.print();
-                })
-                .catch((error) => {
-                    alert('حدث خطأ أثناء حفظ بيانات الحجز: ' + error.message);
-                })
-                .finally(() => {
-                    btn.disabled = false;
-                    btn.textContent = "🖨️ تأكيد وحفظ كارت الحجز (طباعة / PDF)";
-                });
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            }).then(() => {
+                alert(`✅ تم تأكيد الحجز بنجاح!\nرقم الحجز الخاص بك هو: ${ticketNo}`);
+                generateTicketNumber();
+            }).catch((error) => {
+                alert("حدث خطأ أثناء حفظ الحجز: " + error.message);
+            });
         }
 
-        document.getElementById('ticketNumber').textContent = '#IP18-' + Math.floor(1000 + Math.random() * 9000);
-        updateCardDetails();
+        // 2. دالة طباعة كارت الحجز فقط
+        function printReservationCard() {
+            const name = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phoneNumber').value.trim();
+
+            if (!name || !phone) {
+                alert('يرجى كتابة الاسم ورقم الهاتف لإكمال بيانات الكارت قبل الطباعة.');
+                return;
+            }
+
+            const reservationCardClone = document.getElementById('reservationCard').cloneNode(true);
+            const printCardContainer = document.getElementById('printCardContainer');
+            printCardContainer.innerHTML = '';
+            printCardContainer.appendChild(reservationCardClone);
+
+            window.print();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            generateTicketNumber();
+            updateCardDetails();
+        });
     </script>
 </body>
 </html>
