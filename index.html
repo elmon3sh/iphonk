@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حجز iPhone 18 Pro مسبقاً | Apple</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- مكتبات Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -296,18 +296,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 12px;
         }
 
         .apple-brand {
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .apple-icon {
-            width: 24px;
-            height: 24px;
-            fill: #ffffff;
         }
 
         .ticket-number {
@@ -318,6 +313,10 @@
             padding: 4px 12px;
             border-radius: 20px;
             backdrop-filter: blur(5px);
+            direction: ltr !important;
+            unicode-bidi: isolate;
+            display: inline-block;
+            text-align: center;
         }
 
         .card-body-content {
@@ -445,6 +444,133 @@
             transform: scale(0.98);
         }
 
+        /* Full Screen Glassmorphism Modal System */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 32px;
+            padding: 40px 30px;
+            width: 92vw;
+            height: 85vh;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-glass-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: bounce 1.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        .modal-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        .modal-customer-name {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .modal-message {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 35px;
+            line-height: 1.5;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .modal-btn {
+            background: var(--accent-color);
+            color: #ffffff;
+            border: none;
+            padding: 18px 60px;
+            border-radius: 18px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 24px rgba(0, 113, 227, 0.3);
+        }
+
+        .modal-btn:hover {
+            background: var(--accent-hover);
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(0, 113, 227, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .modal-title {
+                font-size: 2.2rem;
+            }
+            .modal-customer-name {
+                font-size: 1.6rem;
+            }
+            .modal-message {
+                font-size: 1.2rem;
+            }
+            .modal-icon {
+                font-size: 3.5rem;
+            }
+            .modal-btn {
+                width: 100%;
+                padding: 14px 20px;
+                font-size: 1.1rem;
+            }
+        }
+
         /* Print Settings */
         @media print {
             @page {
@@ -569,12 +695,12 @@
             <div class="form-section">
                 <div class="section-title">1. اختر الطراز</div>
                 <div class="options-grid">
-                    <label class="option-card active" onclick="selectOption(this, 'model', 'iPhone 18 Pro (6.3 بوصة)', null, 99990)">
+                    <label class="option-card active" onclick="selectOption(this, 'model', 'iPhone 18 Pro', null, 99990)">
                         <input type="radio" name="model" value="iPhone 18 Pro" checked>
                         <strong>iPhone 18 Pro</strong>
                         <div style="font-size: 0.8rem; color: var(--text-secondary);">شاشة 6.3 بوصة</div>
                     </label>
-                    <label class="option-card" onclick="selectOption(this, 'model', 'iPhone 18 Pro Max (6.9 بوصة)', null, 107500)">
+                    <label class="option-card" onclick="selectOption(this, 'model', 'iPhone 18 Pro Max', null, 107500)">
                         <input type="radio" name="model" value="iPhone 18 Pro Max">
                         <strong>iPhone 18 Pro Max</strong>
                         <div style="font-size: 0.8rem; color: var(--text-secondary);">شاشة 6.9 بوصة</div>
@@ -632,9 +758,8 @@
             <div class="form-section">
                 <div class="section-title">4. البيانات الشخصية والقيمة المادية</div>
                 <div class="input-group">
-                    <input type="text" class="input-field" id="fullName" placeholder="الاسم بالكامل" oninput="updateCardDetails()" required>
-                    <input type="tel" class="input-field" id="phoneNumber" placeholder="رقم الهاتف (مثل: 010xxxxxxx)" oninput="updateCardDetails()" required>
-                    <input type="email" class="input-field" id="email" placeholder="البريد الإلكتروني" oninput="updateCardDetails()" required>
+                    <input type="text" class="input-field" id="fullName" placeholder="الاسم بالكامل (حروف عربية فقط)" oninput="sanitizeName(this); updateCardDetails()" required>
+                    <input type="tel" class="input-field" id="phoneNumber" placeholder="رقم الهاتف (أرقام إنجليزية فقط: 01012345678)" oninput="sanitizePhone(this); updateCardDetails()" required>
                     
                     <div class="price-inputs-grid">
                         <div>
@@ -657,13 +782,8 @@
             <!-- Reservation Card Display -->
             <div class="reservation-card" id="reservationCard">
                 <div class="card-top-banner">
-                    <div class="apple-brand">
-                        <svg class="apple-icon" viewBox="0 0 170 170">
-                            <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.84.13-9.72-1.93-14.64-6.18-3.69-3.21-7.62-7.96-11.79-14.24-8.87-13.38-15.35-27.91-19.46-43.58-4.11-15.67-6.17-30.13-6.17-43.38 0-16.14 3.99-29.61 11.97-40.41 7.98-10.8 17.89-16.32 29.73-16.57 4.96.12 10.32 1.25 16.08 3.39 5.76 2.14 9.77 3.26 12.03 3.38 2.37 0 6.64-1.22 12.82-3.66 6.18-2.44 11.64-3.56 16.38-3.37 12.4.62 22.42 5.37 30.06 14.25-11.1 6.72-16.51 16.12-16.24 28.2 0 9.8 3.75 18.06 11.25 24.78 7.5 6.72 16.28 10.36 26.33 10.92-2.3 6.96-5.46 14.75-9.49 23.37zm-26.69-106.67c0-6.72 2.37-13.19 7.12-19.41 4.75-6.22 10.9-10.35 17.44-12.39.24 1.25.37 2.38.37 3.38 0 6.84-2.47 13.38-7.41 19.62-4.94 6.24-11.05 10.28-17.33 12.12-.08-.85-.19-2.09-.19-3.32z"/>
-                        </svg>
-                        <span style="font-weight: 700; font-size: 1.1rem; letter-spacing: 1px;">iPhone Pre-Order Pass</span>
-                    </div>
-                    <span class="ticket-number" id="ticketNumber">#IP18-0000</span>
+                    <span class="ticket-number" id="ticketNumber" dir="ltr">#IP18-000000</span>
+                    <span style="font-weight: 700; font-size: 1.1rem; letter-spacing: 1px;">iPhone Pre-Order Pass</span>
                 </div>
 
                 <div class="card-body-content">
@@ -677,12 +797,8 @@
                             <span class="value" id="cardPhone">---</span>
                         </div>
                         <div class="detail-item full-width">
-                            <span class="label">البريد الإلكتروني</span>
-                            <span class="value" id="cardEmail">---</span>
-                        </div>
-                        <div class="detail-item full-width">
                             <span class="label">الطراز المختارات</span>
-                            <span class="value" id="cardModel">iPhone 18 Pro (6.3 بوصة)</span>
+                            <span class="value" id="cardModel">iPhone 18 Pro</span>
                         </div>
                         <div class="detail-item full-width">
                             <span class="label">اللون والسعة التخزينية</span>
@@ -713,7 +829,6 @@
                     <span>Apple Authorized Reseller</span>
                 </div>
 
-                <!-- الأزرار المزدوجة منفصلة -->
                 <div class="action-buttons-grid">
                     <button type="button" class="btn-action-main btn-confirm" onclick="confirmReservation()">
                         تأكيد الحجز
@@ -726,6 +841,17 @@
 
         </section>
     </main>
+
+    <!-- Fullscreen Glassmorphic Modal Component -->
+    <div class="modal-overlay" id="customModal">
+        <div class="modal-glass-card">
+            <span class="modal-icon" id="modalIcon">🎉</span>
+            <h3 class="modal-title" id="modalTitle">مبروووووك</h3>
+            <div class="modal-customer-name" id="modalCustomerName" style="display: none;"></div>
+            <p class="modal-message" id="modalMessage">محتوى الرسالة...</p>
+            <button class="modal-btn" onclick="closeModal()">موافق</button>
+        </div>
+    </div>
 
     <!-- Print Wrapper Container -->
     <div class="print-wrapper" id="printArea">
@@ -752,10 +878,42 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        let selectedModel = 'iPhone 18 Pro (6.3 بوصة)';
+        let selectedModel = 'iPhone 18 Pro';
         let selectedColor = 'Burgundy';
         let selectedStorage = '256 GB';
         let currentImgSrc = 'iphone-18-pro-finish-select-202609-6-9inch-burgundy.jpg';
+
+        // تنقية مدخل الاسم (حروف عربية ومسافات فقط)
+        function sanitizeName(input) {
+            input.value = input.value.replace(/[^\u0600-\u06FF\s]/g, '');
+        }
+
+        // تنقية مدخل الهاتف (أرقام إنجليزية 0-9 فقط)
+        function sanitizePhone(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+        // دالة إظهار الـ Modal
+        function showModal(title, customerName, message, icon = '🎉') {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('modalIcon').textContent = icon;
+            
+            const customerNameBox = document.getElementById('modalCustomerName');
+            if (customerName) {
+                customerNameBox.textContent = customerName;
+                customerNameBox.style.display = 'block';
+            } else {
+                customerNameBox.style.display = 'none';
+            }
+
+            document.getElementById('customModal').classList.add('active');
+        }
+
+        // دالة إغلاق الـ Modal
+        function closeModal() {
+            document.getElementById('customModal').classList.remove('active');
+        }
 
         // دالة إنشاء رقم حجز متغير تلقائياً
         function generateTicketNumber() {
@@ -798,7 +956,6 @@
         function updateCardDetails() {
             const name = document.getElementById('fullName').value.trim();
             const phone = document.getElementById('phoneNumber').value.trim();
-            const email = document.getElementById('email').value.trim();
 
             const price = parseFloat(document.getElementById('phonePriceInput').value) || 0;
             const deposit = parseFloat(document.getElementById('depositInput').value) || 0;
@@ -812,7 +969,6 @@
 
             document.getElementById('cardName').textContent = name || '---';
             document.getElementById('cardPhone').textContent = phone || '---';
-            document.getElementById('cardEmail').textContent = email || '---';
             document.getElementById('cardModel').textContent = selectedModel;
             document.getElementById('cardColorStorage').textContent = `${selectedColor} - ${selectedStorage}`;
             
@@ -824,17 +980,16 @@
             document.getElementById('cardImgLabel').textContent = selectedColor;
         }
 
-        // 1. دالة تأكيد الحجز في قاعدة البيانات فقط
+        // دالة تأكيد الحجز
         function confirmReservation() {
             const name = document.getElementById('fullName').value.trim();
             const phone = document.getElementById('phoneNumber').value.trim();
-            const email = document.getElementById('email').value.trim();
             const price = document.getElementById('phonePriceInput').value.trim();
             const deposit = document.getElementById('depositInput').value.trim();
             const ticketNo = document.getElementById('ticketNumber').textContent;
 
             if (!name || !phone) {
-                alert('يرجى كتابة الاسم ورقم الهاتف أولاً لإصدار كارت الحجز.');
+                showModal('تنبيه هام', '', 'يرجى كتابة الاسم ورقم الهاتف أولاً لإصدار كارت الحجز.', '⚠️');
                 return;
             }
 
@@ -843,7 +998,6 @@
                 ticketNo: ticketNo,
                 name: name,
                 phone: phone,
-                email: email,
                 model: selectedModel,
                 color: selectedColor,
                 storage: selectedStorage,
@@ -851,20 +1005,24 @@
                 deposit: deposit,
                 timestamp: firebase.database.ServerValue.TIMESTAMP
             }).then(() => {
-                alert(`✅ تم تأكيد الحجز بنجاح!\nرقم الحجز الخاص بك هو: ${ticketNo}`);
+                const titleText = "مبروووووك";
+                const customerName = name;
+                const messageText = `تم حجز ${selectedModel} ${selectedColor} ${selectedStorage} بنجاح`;
+                
+                showModal(titleText, customerName, messageText, '🎉');
                 generateTicketNumber();
             }).catch((error) => {
-                alert("حدث خطأ أثناء حفظ الحجز: " + error.message);
+                showModal('خطأ', '', 'حدث خطأ أثناء حفظ الحجز: ' + error.message, '❌');
             });
         }
 
-        // 2. دالة طباعة كارت الحجز فقط
+        // دالة طباعة كارت الحجز
         function printReservationCard() {
             const name = document.getElementById('fullName').value.trim();
             const phone = document.getElementById('phoneNumber').value.trim();
 
             if (!name || !phone) {
-                alert('يرجى كتابة الاسم ورقم الهاتف لإكمال بيانات الكارت قبل الطباعة.');
+                showModal('تنبيه هام', '', 'يرجى كتابة الاسم ورقم الهاتف لإكمال بيانات الكارت قبل الطباعة.', '⚠️');
                 return;
             }
 
