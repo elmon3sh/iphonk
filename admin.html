@@ -9,6 +9,10 @@
     <!-- مكتبة تصدير ملفات الإكسيل XLSX -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
+    <!-- مكتبات Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <style>
         :root {
             --bg-body: #f4f5f7;
@@ -32,21 +36,14 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: var(--bg-body); color: var(--text-main); font-family: var(--font-ar); line-height: 1.5; padding-bottom: 60px; }
 
-        .top-navbar {
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-light);
-            position: sticky; top: 0; z-index: 100; padding: 12px 0;
-        }
+        .top-navbar { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-light); position: sticky; top: 0; z-index: 100; padding: 12px 0; }
         .nav-content { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
         .brand-logo { display: flex; align-items: center; gap: 16px; }
         .brand-logo img { height: 38px; }
         .badge-admin { background: rgba(0, 113, 227, 0.08); color: var(--primary-accent); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
         .nav-actions { display: flex; gap: 10px; }
 
-        .btn-secondary {
-            background: var(--surface-card); border: 1px solid var(--border-light); color: var(--text-main);
-            padding: 8px 16px; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 600;
-            cursor: pointer; transition: all 0.2s; text-decoration: none; display: flex; align-items: center; gap: 6px; font-family: var(--font-ar);
-        }
+        .btn-secondary { background: var(--surface-card); border: 1px solid var(--border-light); color: var(--text-main); padding: 8px 16px; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; display: flex; align-items: center; gap: 6px; font-family: var(--font-ar); }
         .btn-secondary:hover { border-color: var(--primary-accent); color: var(--primary-accent); }
 
         .main-container { max-width: 1200px; margin: 32px auto 0; padding: 0 24px; display: flex; flex-direction: column; gap: 28px; }
@@ -54,10 +51,7 @@
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         @media (max-width: 850px) { .stats-grid { grid-template-columns: 1fr; } }
 
-        .stat-card {
-            background: var(--surface-card); border: 1px solid var(--border-light); border-radius: var(--radius-xl);
-            padding: 24px; box-shadow: var(--shadow-subtle); position: relative; overflow: hidden;
-        }
+        .stat-card { background: var(--surface-card); border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-subtle); position: relative; overflow: hidden; }
         .stat-card::before { content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: var(--primary-accent); }
         .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         .stat-label { font-size: 0.88rem; color: var(--text-muted); font-weight: 600; }
@@ -80,6 +74,8 @@
         
         .btn-clear { background: #ff3b3015; color: #ff3b30; border: 1px solid #ff3b3033; }
         .btn-clear:hover { background: #ff3b30; color: #fff; }
+        .btn-delete-item { background: none; border: none; color: #ff3b30; cursor: pointer; font-size: 0.9rem; padding: 4px 8px; border-radius: 6px; }
+        .btn-delete-item:hover { background: #ff3b3015; }
     </style>
 </head>
 <body>
@@ -103,7 +99,7 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-header"><span class="stat-label">الطراز الأكثر طلباً</span><span>🔥</span></div>
-                <div class="highlight-text" id="mostRequestedModel">لا يوجد بيانات بعد</div>
+                <div class="highlight-text" id="mostRequestedModel">جاري التحميل...</div>
             </div>
 
             <div class="stat-card">
@@ -121,7 +117,7 @@
         <section class="dashboard-section">
             <div class="section-header">
                 <h2 class="section-title"><span>📋</span> سجل الحجوزات المسجلة</h2>
-                <button class="btn-secondary" onclick="loadDashboardData()">تحديث مباشر 🔄</button>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">تحديث حي ومباشر 🟢</span>
             </div>
 
             <div class="table-wrapper">
@@ -135,6 +131,7 @@
                             <th>السعر الإجمالي</th>
                             <th>العربون المدفوع</th>
                             <th>الحالة</th>
+                            <th>إجراءات</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -144,52 +141,87 @@
     </main>
 
     <script>
-        function loadDashboardData() {
-            let bookings = JSON.parse(localStorage.getItem('iphonk_bookings')) || [];
-            const tbody = document.querySelector('#bookingsTable tbody');
-            tbody.innerHTML = '';
-            
-            if(bookings.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: var(--text-muted);">لا توجد حجوزات مسجلة حتى الآن</td></tr>`;
-                document.getElementById('totalBookingsCount').textContent = "0";
-                document.getElementById('totalDepositSum').textContent = "EGP 0";
-                document.getElementById('mostRequestedModel').textContent = "-";
-                return;
-            }
+        // ⚠️ ضع هنا نفس كائن firebaseConfig الموجود بصفحة الحجز
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
-            let totalDepositSum = 0;
-            let modelCounts = {};
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-            bookings.forEach(b => {
-                let depNum = parseInt(String(b.deposit).replace(/[^0-9]/g, '')) || 0;
-                totalDepositSum += depNum;
-                modelCounts[b.model] = (modelCounts[b.model] || 0) + 1;
+        function listenToDashboardData() {
+            database.ref('orders').on('value', (snapshot) => {
+                const data = snapshot.val();
+                const tbody = document.querySelector('#bookingsTable tbody');
+                tbody.innerHTML = '';
 
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><span class="booking-id">${b.id}</span></td>
-                    <td>${b.name}</td>
-                    <td class="num-en">${b.phone}</td>
-                    <td>${b.model}</td>
-                    <td class="num-en">${b.price}</td>
-                    <td class="num-en" style="color: var(--primary-accent);">${b.deposit}</td>
-                    <td><span class="status-badge">● ${b.status || 'مؤكد'}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('totalBookingsCount').textContent = bookings.length;
-            document.getElementById('totalDepositSum').textContent = `EGP ${totalDepositSum.toLocaleString()}`;
-
-            let mostRequested = '';
-            let maxCount = 0;
-            for (let m in modelCounts) {
-                if (modelCounts[m] > maxCount) {
-                    maxCount = modelCounts[m];
-                    mostRequested = m;
+                if (!data) {
+                    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color: var(--text-muted);">لا توجد حجوزات مسجلة حتى الآن</td></tr>`;
+                    document.getElementById('totalBookingsCount').textContent = "0";
+                    document.getElementById('totalDepositSum').textContent = "EGP 0";
+                    document.getElementById('mostRequestedModel').textContent = "-";
+                    return;
                 }
+
+                let totalDepositSum = 0;
+                let modelCounts = {};
+                let bookingsCount = 0;
+
+                Object.keys(data).forEach((key) => {
+                    const b = data[key];
+                    bookingsCount++;
+
+                    let depNum = parseFloat(b.deposit) || 0;
+                    totalDepositSum += depNum;
+
+                    const modelName = b.model || 'غير محدد';
+                    const specsInfo = `${modelName} - ${b.color || ''} ${b.storage || ''}`.trim();
+                    modelCounts[modelName] = (modelCounts[modelName] || 0) + 1;
+
+                    const priceFormatted = (parseFloat(b.price) || 0).toLocaleString('en-US') + ' EGP';
+                    const depositFormatted = depNum.toLocaleString('en-US') + ' EGP';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><span class="booking-id">${b.ticketNo || '---'}</span></td>
+                        <td>${b.name || '---'}</td>
+                        <td class="num-en">${b.phone || '---'}</td>
+                        <td>${specsInfo}</td>
+                        <td class="num-en">${priceFormatted}</td>
+                        <td class="num-en" style="color: var(--primary-accent);">${depositFormatted}</td>
+                        <td><span class="status-badge">● مؤكد</span></td>
+                        <td>
+                            <button class="btn-delete-item" onclick="deleteSingleOrder('${key}')" title="حذف الحجز">🗑️</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('totalBookingsCount').textContent = bookingsCount;
+                document.getElementById('totalDepositSum').textContent = `EGP ${totalDepositSum.toLocaleString('en-US')}`;
+
+                let mostRequested = '';
+                let maxCount = 0;
+                for (let m in modelCounts) {
+                    if (modelCounts[m] > maxCount) {
+                        maxCount = modelCounts[m];
+                        mostRequested = m;
+                    }
+                }
+                document.getElementById('mostRequestedModel').textContent = mostRequested || '-';
+            });
+        }
+
+        function deleteSingleOrder(key) {
+            if (confirm('هل أنت تأكد من رغبتك في حذف هذا الحجز؟')) {
+                database.ref('orders/' + key).remove();
             }
-            document.getElementById('mostRequestedModel').textContent = mostRequested;
         }
 
         function exportToExcel() {
@@ -201,16 +233,13 @@
         }
 
         function clearData() {
-            if(confirm('هل أنت تأكد من رغبتك في مسح كافة الحجوزات المسجلة؟')) {
-                localStorage.removeItem('iphonk_bookings');
-                loadDashboardData();
+            if (confirm('هل أنت تأكد من رغبتك في مسح كافة الحجوزات المسجلة نهائياً؟')) {
+                database.ref('orders').remove();
             }
         }
 
-        // تحديث البيانات فور تحميل الصفحة وكل 5 ثوانٍ تلقائياً
         window.addEventListener('DOMContentLoaded', () => {
-            loadDashboardData();
-            setInterval(loadDashboardData, 5000); 
+            listenToDashboardData();
         });
     </script>
 </body>
