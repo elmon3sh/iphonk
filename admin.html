@@ -22,139 +22,399 @@
             --primary-gradient: linear-gradient(135deg, #0071e3 0%, #005bb5 100%);
             --text-main: #1d1d1f;
             --text-muted: #86868b;
-            --text-sub: #515154;
             --success-bg: #e6f4ea;
             --success-text: #1e8e3e;
-            --radius-xl: 24px;
-            --radius-md: 12px;
+            --radius-xl: 20px;
+            --radius-md: 10px;
             --shadow-subtle: 0 4px 24px rgba(0, 0, 0, 0.03);
-            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.07);
             --font-ar: 'Cairo', sans-serif;
             --font-en: 'Inter', sans-serif;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.4);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--bg-body); color: var(--text-main); font-family: var(--font-ar); line-height: 1.5; padding-bottom: 60px; }
+        body { background-color: var(--bg-body); color: var(--text-main); font-family: var(--font-ar); line-height: 1.4; padding-bottom: 40px; }
 
-        .top-navbar { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-light); position: sticky; top: 0; z-index: 100; padding: 12px 0; }
-        .nav-content { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
-        .brand-logo { display: flex; align-items: center; gap: 16px; }
-        .brand-logo img { height: 38px; }
-        .badge-admin { background: rgba(0, 113, 227, 0.08); color: var(--primary-accent); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-        .nav-actions { display: flex; gap: 10px; }
+        /* --- شاشة تسجيل الدخول --- */
+        #loginOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(244, 245, 247, 0.6); backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px); display: flex; align-items: center; justify-content: center;
+            z-index: 1000; padding: 20px;
+        }
 
-        .btn-secondary { background: var(--surface-card); border: 1px solid var(--border-light); color: var(--text-main); padding: 8px 16px; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; display: flex; align-items: center; gap: 6px; font-family: var(--font-ar); }
+        .login-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            padding: 32px 28px; border-radius: var(--radius-xl);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06); width: 100%; max-width: 380px; text-align: center;
+            backdrop-filter: blur(16px);
+        }
+
+        .login-icon { font-size: 2.2rem; margin-bottom: 8px; }
+        .login-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 4px; }
+        .login-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px; }
+        .login-form { display: flex; flex-direction: column; gap: 10px; }
+
+        .form-input {
+            width: 100%; padding: 10px 14px; border-radius: var(--radius-md);
+            border: 1px solid var(--border-light); background: rgba(255, 255, 255, 0.8); font-size: 0.9rem;
+            outline: none; transition: all 0.2s; font-family: var(--font-ar);
+        }
+
+        .form-input:focus { border-color: var(--primary-accent); background: #fff; box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1); }
+
+        .btn-login {
+            background: var(--primary-gradient); color: #fff; border: none;
+            padding: 11px; border-radius: var(--radius-md); font-size: 0.9rem;
+            font-weight: 700; cursor: pointer; font-family: var(--font-ar);
+        }
+
+        .btn-change-pass { background: transparent; color: var(--primary-accent); border: none; font-size: 0.78rem; font-weight: 700; cursor: pointer; text-decoration: underline; }
+        .error-message { color: #ff3b30; font-size: 0.8rem; font-weight: 600; display: none; }
+
+        #dashboardContent { display: none; }
+
+        .top-navbar { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-light); position: sticky; top: 0; z-index: 100; padding: 10px 0; }
+        .nav-content { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .brand-logo { display: flex; align-items: center; gap: 12px; }
+        .brand-logo img { height: 32px; }
+        .badge-admin { background: rgba(0, 113, 227, 0.08); color: var(--primary-accent); padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+        .nav-actions { display: flex; gap: 8px; }
+
+        .btn-secondary { background: var(--surface-card); border: 1px solid var(--border-light); color: var(--text-main); padding: 6px 12px; border-radius: var(--radius-md); font-size: 0.8rem; font-weight: 600; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 4px; font-family: var(--font-ar); }
         .btn-secondary:hover { border-color: var(--primary-accent); color: var(--primary-accent); }
 
-        .main-container { max-width: 1200px; margin: 32px auto 0; padding: 0 24px; display: flex; flex-direction: column; gap: 28px; }
+        .main-container { max-width: 1200px; margin: 20px auto 0; padding: 0 20px; display: flex; flex-direction: column; gap: 20px; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
         @media (max-width: 850px) { .stats-grid { grid-template-columns: 1fr; } }
 
-        .stat-card { background: var(--surface-card); border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-subtle); position: relative; overflow: hidden; }
+        .stat-card { background: var(--surface-card); border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 16px 20px; box-shadow: var(--shadow-subtle); position: relative; }
         .stat-card::before { content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: var(--primary-accent); }
-        .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-        .stat-label { font-size: 0.88rem; color: var(--text-muted); font-weight: 600; }
-        .stat-value { font-size: 1.85rem; font-weight: 800; font-family: var(--font-en); }
-        .highlight-text { font-size: 1.2rem; color: var(--primary-accent); font-weight: 700; }
+        .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+        .stat-value { font-size: 1.4rem; font-weight: 800; font-family: var(--font-en); }
+        .highlight-text { font-size: 1.05rem; color: var(--primary-accent); font-weight: 700; }
 
-        .dashboard-section { background: var(--surface-card); border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 28px; box-shadow: var(--shadow-subtle); }
-        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-        .section-title { font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .dashboard-section { background: var(--surface-card); border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 20px; box-shadow: var(--shadow-subtle); }
+        
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 12px; flex-wrap: wrap; }
+        .section-title { font-size: 1.05rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 
+        /* --- شريط البحث بنمط زجاجي Glassmorphism --- */
+        .search-box {
+            position: relative;
+            min-width: 260px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 8px 36px 8px 12px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            background: rgba(244, 245, 247, 0.7);
+            backdrop-filter: blur(10px);
+            font-size: 0.82rem;
+            outline: none;
+            transition: all 0.2s;
+            font-family: var(--font-ar);
+        }
+        .search-input:focus {
+            background: #ffffff;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+        }
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* --- جدول الحجوزات --- */
         .table-wrapper { width: 100%; overflow-x: auto; }
         .modern-table { width: 100%; border-collapse: collapse; text-align: right; white-space: nowrap; }
-        .modern-table th { background: #fafafa; color: var(--text-muted); font-size: 0.82rem; font-weight: 700; padding: 14px 18px; border-bottom: 1px solid var(--border-light); }
-        .modern-table td { padding: 16px 18px; font-size: 0.92rem; border-bottom: 1px solid rgba(0, 0, 0, 0.04); font-weight: 600; }
+        .modern-table th { background: #fafafa; color: var(--text-muted); font-size: 0.78rem; font-weight: 700; padding: 8px 12px; border-bottom: 1px solid var(--border-light); }
+        .modern-table td { padding: 8px 12px; font-size: 0.85rem; border-bottom: 1px solid rgba(0, 0, 0, 0.04); font-weight: 600; height: 42px; }
         .modern-table tbody tr:hover { background: rgba(0, 113, 227, 0.015); }
 
-        .booking-id { font-family: var(--font-en); background: #f0f4f8; padding: 4px 8px; border-radius: 6px; font-size: 0.85rem; color: #334155; font-weight: 700; }
+        .booking-id { font-family: var(--font-en); background: #f0f4f8; padding: 2px 6px; border-radius: 4px; font-size: 0.78rem; color: #334155; font-weight: 700; }
         .num-en { font-family: var(--font-en); }
-        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; background: var(--success-bg); color: var(--success-text); }
+        .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 0.72rem; font-weight: 700; background: var(--success-bg); color: var(--success-text); }
         
-        .btn-clear { background: #ff3b3015; color: #ff3b30; border: 1px solid #ff3b3033; }
-        .btn-clear:hover { background: #ff3b30; color: #fff; }
-        .btn-delete-item { background: none; border: none; color: #ff3b30; cursor: pointer; font-size: 0.9rem; padding: 4px 8px; border-radius: 6px; }
-        .btn-delete-item:hover { background: #ff3b3015; }
+        .action-btns { display: flex; gap: 4px; }
+        .btn-action { background: none; border: 1px solid var(--border-light); cursor: pointer; font-size: 0.78rem; padding: 3px 8px; border-radius: 6px; font-family: var(--font-ar); font-weight: 600; transition: all 0.2s; }
+        .btn-edit { color: var(--primary-accent); }
+        .btn-edit:hover { background: rgba(0, 113, 227, 0.08); border-color: var(--primary-accent); }
+        .btn-delete { color: #ff3b30; }
+        .btn-delete:hover { background: #ff3b3015; border-color: #ff3b30; }
+
+        /* --- تصميم النوافذ المنبثقة Glassmorphism Modals --- */
+        .glass-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: none; align-items: center; justify-content: center;
+            z-index: 1100; padding: 20px;
+        }
+
+        .glass-modal-card {
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 24px; border-radius: var(--radius-xl);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12); width: 100%; max-width: 420px;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            animation: modalFadeIn 0.2s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .modal-title { font-size: 1.05rem; font-weight: 800; color: var(--text-main); }
+        .modal-close { background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--text-muted); }
+
+        .modal-body { display: flex; flex-direction: column; gap: 12px; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; text-align: right; }
+        .input-group label { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); }
+
+        .modal-footer { display: flex; gap: 8px; margin-top: 18px; justify-content: flex-end; }
+        .btn-cancel { background: rgba(0,0,0,0.06); color: var(--text-main); border: none; padding: 8px 16px; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; font-family: var(--font-ar); font-size: 0.82rem; }
+        .btn-save { background: var(--primary-accent); color: #fff; border: none; padding: 8px 18px; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; font-family: var(--font-ar); font-size: 0.82rem; }
+        .btn-danger { background: #ff3b30; color: #fff; border: none; padding: 8px 18px; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; font-family: var(--font-ar); font-size: 0.82rem; }
     </style>
 </head>
 <body>
 
-    <header class="top-navbar">
-        <div class="nav-content">
-            <div class="brand-logo">
-                <img src="logo.png" alt="iPHONK" onerror="this.style.display='none'">
-                <span class="badge-admin">Admin Dashboard</span>
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginOverlay">
+        <div class="login-card">
+            <div class="login-icon">🔒</div>
+            <h2 class="login-title">iPHONK Admin</h2>
+            <p class="login-subtitle">أدخل كلمة المرور للوصول إلى لوحة التحكم</p>
+            
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <input type="password" id="passwordInput" class="form-input" style="text-align: center;" placeholder="••••••••" required autofocus>
+                <div id="errorMsg" class="error-message">كلمة المرور غير صحيحة!</div>
+                <button type="submit" class="btn-login">تسجيل الدخول</button>
+                <button type="button" class="btn-change-pass" onclick="openChangePassModal()">تغيير كلمة المرور ⚙️</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- محتوى لوحة التحكم -->
+    <div id="dashboardContent">
+        <header class="top-navbar">
+            <div class="nav-content">
+                <div class="brand-logo">
+                    <img src="logo.png" alt="iPHONK" onerror="this.style.display='none'">
+                    <span class="badge-admin">Admin Dashboard</span>
+                </div>
+                <div class="nav-actions">
+                    <a href="https://elmon3sh.github.io/iphonk/" target="_blank" class="btn-secondary">زيارة الموقع 🌐</a>
+                    <button class="btn-secondary" onclick="exportToExcel()">تصدير البيانات 📥</button>
+                    <button class="btn-secondary" onclick="openChangePassModal()">تغيير الباسورد 🔑</button>
+                    <button class="btn-secondary" onclick="logoutAdmin()">خروج 🚪</button>
+                </div>
             </div>
-            <div class="nav-actions">
-                <a href="https://elmon3sh.github.io/iphonk/" target="_blank" class="btn-secondary">زيارة موقع الحجز 🌐</a>
-                <button class="btn-secondary" onclick="exportToExcel()">تصدير البيانات 📥</button>
-                <button class="btn-secondary btn-clear" onclick="clearData()">تفريغ البيانات 🗑️</button>
+        </header>
+
+        <main class="main-container">
+            <!-- الإحصائيات -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header"><span class="stat-label">الطراز الأكثر طلباً</span><span>🔥</span></div>
+                    <div class="highlight-text" id="mostRequestedModel">جاري التحميل...</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header"><span class="stat-label">إجمالي العربون المحصل</span><span>💳</span></div>
+                    <div class="stat-value" id="totalDepositSum">EGP 0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header"><span class="stat-label">إجمالي الحجوزات المسجلة</span><span>📦</span></div>
+                    <div class="stat-value" id="totalBookingsCount">0</div>
+                </div>
+            </div>
+
+            <!-- سجل الحجوزات مع شريط البحث -->
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2 class="section-title"><span>📋</span> سجل الحجوزات المسجلة</h2>
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" class="search-input" placeholder="ابحث بالاسم أو رقم الهاتف..." onkeyup="filterBookings()">
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="modern-table" id="bookingsTable">
+                        <thead>
+                            <tr>
+                                <th>رقم الحجز</th>
+                                <th>اسم العميل</th>
+                                <th>رقم الهاتف</th>
+                                <th>الطراز والمواصفات</th>
+                                <th>السعر الإجمالي</th>
+                                <th>العربون المدفوع</th>
+                                <th>الحالة</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- نافذة تعديل بيانات العميل (Modal) -->
+    <div id="editModal" class="glass-modal-overlay">
+        <div class="glass-modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">✏️ تعديل بيانات الحجز</h3>
+                <button class="modal-close" onclick="closeModal('editModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editKey">
+                <div class="input-group">
+                    <label>اسم العميل</label>
+                    <input type="text" id="editName" class="form-input">
+                </div>
+                <div class="input-group">
+                    <label>رقم الهاتف</label>
+                    <input type="text" id="editPhone" class="form-input">
+                </div>
+                <div class="input-group">
+                    <label>طراز الجهاز والمواصفات</label>
+                    <input type="text" id="editModel" class="form-input">
+                </div>
+                <div class="input-group">
+                    <label>السعر الإجمالي (EGP)</label>
+                    <input type="text" id="editPrice" class="form-input">
+                </div>
+                <div class="input-group">
+                    <label>العربون المدفوع (EGP)</label>
+                    <input type="text" id="editDeposit" class="form-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('editModal')">إلغاء</button>
+                <button class="btn-save" onclick="saveOrderEdits()">حفظ التغييرات</button>
             </div>
         </div>
-    </header>
+    </div>
 
-    <main class="main-container">
-        <!-- الإحصائيات -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-header"><span class="stat-label">الطراز الأكثر طلباً</span><span>🔥</span></div>
-                <div class="highlight-text" id="mostRequestedModel">جاري التحميل...</div>
+    <!-- نافذة تأكيد الحذف بشرط إدخال كلمة المرور (Modal) -->
+    <div id="deleteModal" class="glass-modal-overlay">
+        <div class="glass-modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">🗑️ تأكيد حذف الحجز</h3>
+                <button class="modal-close" onclick="closeModal('deleteModal')">✕</button>
             </div>
-
-            <div class="stat-card">
-                <div class="stat-header"><span class="stat-label">إجمالي العربون المحصل</span><span>💳</span></div>
-                <div class="stat-value" id="totalDepositSum">EGP 0</div>
+            <div class="modal-body">
+                <p style="font-size: 0.85rem; color: var(--text-muted);">أدخل كلمة المرور لتأكيد المسح النهائى لبيانات هذا العميل:</p>
+                <input type="hidden" id="deleteKey">
+                <div class="input-group">
+                    <input type="password" id="deletePassInput" class="form-input" style="text-align: center;" placeholder="••••••••">
+                </div>
+                <div id="deleteErrorMsg" class="error-message">كلمة المرور غير صحيحة!</div>
             </div>
-
-            <div class="stat-card">
-                <div class="stat-header"><span class="stat-label">إجمالي الحجوزات المسجلة</span><span>📦</span></div>
-                <div class="stat-value" id="totalBookingsCount">0</div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('deleteModal')">إلغاء</button>
+                <button class="btn-danger" onclick="confirmDeleteOrder()">تأكيد الحذف</button>
             </div>
         </div>
+    </div>
 
-        <!-- الجدول -->
-        <section class="dashboard-section">
-            <div class="section-header">
-                <h2 class="section-title"><span>📋</span> سجل الحجوزات المسجلة</h2>
-                <span style="font-size: 0.85rem; color: var(--text-muted);">تحديث حي ومباشر 🟢</span>
+    <!-- نافذة تغيير كلمة المرور (Modal) -->
+    <div id="changePassModal" class="glass-modal-overlay">
+        <div class="glass-modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">🔑 تغيير كلمة المرور</h3>
+                <button class="modal-close" onclick="closeModal('changePassModal')">✕</button>
             </div>
-
-            <div class="table-wrapper">
-                <table class="modern-table" id="bookingsTable">
-                    <thead>
-                        <tr>
-                            <th>رقم الحجز</th>
-                            <th>اسم العميل</th>
-                            <th>رقم الهاتف</th>
-                            <th>الطراز والمواصفات</th>
-                            <th>السعر الإجمالي</th>
-                            <th>العربون المدفوع</th>
-                            <th>الحالة</th>
-                            <th>إجراءات</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>كلمة المرور الحالية</label>
+                    <input type="password" id="currPassInput" class="form-input" placeholder="••••••••">
+                </div>
+                <div class="input-group">
+                    <label>كلمة المرور الجديدة</label>
+                    <input type="password" id="newPassInput" class="form-input" placeholder="••••••••">
+                </div>
+                <div id="changePassErrorMsg" class="error-message">كلمة المرور الحالية غير صحيحة!</div>
             </div>
-        </section>
-    </main>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('changePassModal')">إلغاء</button>
+                <button class="btn-save" onclick="confirmChangePassword()">حفظ الباسورد الجديد</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // ⚠️ ضع هنا نفس كائن firebaseConfig الموجود بصفحة الحجز
-        const firebaseConfig = {
-  apiKey: "AIzaSyD3a3CPO8pOzfbzAnxDoZcLt_jhVwMdxuI",
-  authDomain: "iphonk-df6b0.firebaseapp.com",
-  databaseURL: "https://iphonk-df6b0-default-rtdb.firebaseio.com",
-  projectId: "iphonk-df6b0",
-  storageBucket: "iphonk-df6b0.firebasestorage.app",
-  messagingSenderId: "878080840386",
-  appId: "1:878080840386:web:937f098bff921eb2a6a15b",
-  measurementId: "G-RDGY7ZVJMW"
-};
+        const DEFAULT_PASSWORD = "123";
 
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        function getStoredPassword() {
+            return localStorage.getItem('admin_password') || DEFAULT_PASSWORD;
+        }
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3a3CPO8pOzfbzAnxDoZcLt_jhVwMdxuI",
+            authDomain: "iphonk-df6b0.firebaseapp.com",
+            databaseURL: "https://iphonk-df6b0-default-rtdb.firebaseio.com",
+            projectId: "iphonk-df6b0",
+            storageBucket: "iphonk-df6b0.firebasestorage.app",
+            messagingSenderId: "878080840386",
+            appId: "1:878080840386:web:937f098bff921eb2a6a15b",
+            measurementId: "G-RDGY7ZVJMW"
+        };
+
+        let database;
+
+        function checkSession() {
+            if (sessionStorage.getItem('admin_authenticated') === 'true') {
+                unlockDashboard();
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const inputVal = document.getElementById('passwordInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (inputVal === getStoredPassword()) {
+                sessionStorage.setItem('admin_authenticated', 'true');
+                errorMsg.style.display = 'none';
+                unlockDashboard();
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+
+        function unlockDashboard() {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('dashboardContent').style.display = 'block';
+            
+            if (!database) {
+                firebase.initializeApp(firebaseConfig);
+                database = firebase.database();
+                listenToDashboardData();
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('admin_authenticated');
+            location.reload();
+        }
 
         function listenToDashboardData() {
             database.ref('orders').on('value', (snapshot) => {
@@ -182,7 +442,7 @@
                     totalDepositSum += depNum;
 
                     const modelName = b.model || 'غير محدد';
-                    const specsInfo = `${modelName} - ${b.color || ''} ${b.storage || ''}`.trim();
+                    const specsInfo = `${modelName} ${b.color || ''} ${b.storage || ''}`.trim();
                     modelCounts[modelName] = (modelCounts[modelName] || 0) + 1;
 
                     const priceFormatted = (parseFloat(b.price) || 0).toLocaleString('en-US') + ' EGP';
@@ -191,14 +451,17 @@
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td><span class="booking-id">${b.ticketNo || '---'}</span></td>
-                        <td>${b.name || '---'}</td>
-                        <td class="num-en">${b.phone || '---'}</td>
+                        <td class="client-name">${b.name || '---'}</td>
+                        <td class="num-en client-phone">${b.phone || '---'}</td>
                         <td>${specsInfo}</td>
                         <td class="num-en">${priceFormatted}</td>
                         <td class="num-en" style="color: var(--primary-accent);">${depositFormatted}</td>
                         <td><span class="status-badge">● مؤكد</span></td>
                         <td>
-                            <button class="btn-delete-item" onclick="deleteSingleOrder('${key}')" title="حذف الحجز">🗑️</button>
+                            <div class="action-btns">
+                                <button class="btn-action btn-edit" onclick="openEditModal('${key}', '${encodeURIComponent(JSON.stringify(b))}')" title="تعديل الحجز">✏️ تعديل</button>
+                                <button class="btn-action btn-delete" onclick="openDeleteModal('${key}')" title="حذف الحجز">🗑️ مسح</button>
+                            </div>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -219,9 +482,99 @@
             });
         }
 
-        function deleteSingleOrder(key) {
-            if (confirm('هل أنت تأكد من رغبتك في حذف هذا الحجز؟')) {
-                database.ref('orders/' + key).remove();
+        /* --- دالة البحث الفوري (اسم العميل أو الرقم) --- */
+        function filterBookings() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#bookingsTable tbody tr');
+
+            rows.forEach(row => {
+                const nameText = row.querySelector('.client-name')?.textContent.toLowerCase() || '';
+                const phoneText = row.querySelector('.client-phone')?.textContent.toLowerCase() || '';
+
+                if (nameText.includes(query) || phoneText.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        /* --- إدارة النوافذ المنبثقة (Modals) --- */
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // نافذة التعديل
+        function openEditModal(key, encodedData) {
+            const b = JSON.parse(decodeURIComponent(encodedData));
+            document.getElementById('editKey').value = key;
+            document.getElementById('editName').value = b.name || '';
+            document.getElementById('editPhone').value = b.phone || '';
+            document.getElementById('editModel').value = b.model || '';
+            document.getElementById('editPrice').value = b.price || '';
+            document.getElementById('editDeposit').value = b.deposit || '';
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function saveOrderEdits() {
+            const key = document.getElementById('editKey').value;
+            const updatedData = {
+                name: document.getElementById('editName').value.trim(),
+                phone: document.getElementById('editPhone').value.trim(),
+                model: document.getElementById('editModel').value.trim(),
+                price: document.getElementById('editPrice').value.trim(),
+                deposit: document.getElementById('editDeposit').value.trim()
+            };
+
+            database.ref('orders/' + key).update(updatedData)
+                .then(() => {
+                    closeModal('editModal');
+                })
+                .catch((err) => alert("حدث خطأ أثناء التحديث: " + err.message));
+        }
+
+        // نافذة الحذف
+        function openDeleteModal(key) {
+            document.getElementById('deleteKey').value = key;
+            document.getElementById('deletePassInput').value = '';
+            document.getElementById('deleteErrorMsg').style.display = 'none';
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function confirmDeleteOrder() {
+            const key = document.getElementById('deleteKey').value;
+            const pass = document.getElementById('deletePassInput').value;
+
+            if (pass === getStoredPassword()) {
+                database.ref('orders/' + key).remove()
+                    .then(() => closeModal('deleteModal'))
+                    .catch((err) => alert("حدث خطأ أثناء الحذف: " + err.message));
+            } else {
+                document.getElementById('deleteErrorMsg').style.display = 'block';
+            }
+        }
+
+        // نافذة تغيير الباسورد
+        function openChangePassModal() {
+            document.getElementById('currPassInput').value = '';
+            document.getElementById('newPassInput').value = '';
+            document.getElementById('changePassErrorMsg').style.display = 'none';
+            document.getElementById('changePassModal').style.display = 'flex';
+        }
+
+        function confirmChangePassword() {
+            const currentPass = document.getElementById('currPassInput').value;
+            const newPass = document.getElementById('newPassInput').value.trim();
+
+            if (currentPass === getStoredPassword()) {
+                if (newPass !== '') {
+                    localStorage.setItem('admin_password', newPass);
+                    closeModal('changePassModal');
+                } else {
+                    alert('يرجى إدخال كلمة مرور جديدة صحيحة!');
+                }
+            } else {
+                document.getElementById('changePassErrorMsg').style.display = 'block';
             }
         }
 
@@ -233,15 +586,7 @@
             XLSX.writeFile(workbook, `سجل_الحجوزات_iPHONK_${dateStr}.xlsx`);
         }
 
-        function clearData() {
-            if (confirm('هل أنت تأكد من رغبتك في مسح كافة الحجوزات المسجلة نهائياً؟')) {
-                database.ref('orders').remove();
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            listenToDashboardData();
-        });
+        window.addEventListener('DOMContentLoaded', checkSession);
     </script>
 </body>
 </html>
