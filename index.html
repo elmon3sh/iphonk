@@ -260,6 +260,12 @@
             box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
         }
 
+        .input-field[readonly] {
+            background: #f2f2f7;
+            color: #3a3a3c;
+            cursor: not-allowed;
+        }
+
         .price-inputs-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -297,12 +303,6 @@
             justify-content: space-between;
             align-items: center;
             gap: 12px;
-        }
-
-        .apple-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .ticket-number {
@@ -695,12 +695,12 @@
             <div class="form-section">
                 <div class="section-title">1. اختر الطراز</div>
                 <div class="options-grid">
-                    <label class="option-card active" onclick="selectOption(this, 'model', 'iPhone 18 Pro', null, 99990)">
+                    <label class="option-card active" onclick="selectOption(this, 'model', 'iPhone 18 Pro', 'pro')">
                         <input type="radio" name="model" value="iPhone 18 Pro" checked>
                         <strong>iPhone 18 Pro</strong>
                         <div style="font-size: 0.8rem; color: var(--text-secondary);">شاشة 6.3 بوصة</div>
                     </label>
-                    <label class="option-card" onclick="selectOption(this, 'model', 'iPhone 18 Pro Max', null, 107500)">
+                    <label class="option-card" onclick="selectOption(this, 'model', 'iPhone 18 Pro Max', 'promax')">
                         <input type="radio" name="model" value="iPhone 18 Pro Max">
                         <strong>iPhone 18 Pro Max</strong>
                         <div style="font-size: 0.8rem; color: var(--text-secondary);">شاشة 6.9 بوصة</div>
@@ -764,7 +764,7 @@
                     <div class="price-inputs-grid">
                         <div>
                             <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">قيمة الهاتف (EGP):</label>
-                            <input type="number" class="input-field" id="phonePriceInput" placeholder="أدخل السعر" value="99990" oninput="updateCardDetails()">
+                            <input type="number" class="input-field" id="phonePriceInput" readonly value="99990">
                         </div>
                         <div>
                             <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 4px;">قيمة العربون (EGP):</label>
@@ -879,9 +879,34 @@
         const database = firebase.database();
 
         let selectedModel = 'iPhone 18 Pro';
+        let selectedModelKey = 'pro'; // مفتاح الطراز في قاعدة البيانات
         let selectedColor = 'Burgundy';
         let selectedStorage = '256 GB';
         let currentImgSrc = 'iphone-18-pro-finish-select-202609-6-9inch-burgundy.jpg';
+        
+        let dynamicPrices = {
+            pro: 99990,
+            promax: 107500
+        };
+
+        // جلب الأسعار المحدثة من لوحة التحكم (Firebase) مباشرة
+        database.ref('settings/prices').on('value', (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                if (data.pro) dynamicPrices.pro = parseFloat(data.pro);
+                if (data.promax) dynamicPrices.promax = parseFloat(data.promax);
+                
+                // تحديث السعر المعروض حالياً بناءً على الطراز المختار
+                updateModelPrice();
+            }
+        });
+
+        // تحديث سعر الهاتف بناءً على الطراز المحدد
+        function updateModelPrice() {
+            const currentPrice = dynamicPrices[selectedModelKey] || 99990;
+            document.getElementById('phonePriceInput').value = currentPrice;
+            updateCardDetails();
+        }
 
         // تنقية مدخل الاسم (حروف عربية ومسافات فقط)
         function sanitizeName(input) {
@@ -921,7 +946,7 @@
             document.getElementById('ticketNumber').textContent = '#IP18-' + randomNum;
         }
 
-        function selectOption(element, category, value, imgSrc = null, price = null) {
+        function selectOption(element, category, value, extra = null) {
             const parent = element.parentElement;
             const cards = parent.querySelectorAll('.option-card');
             cards.forEach(card => card.classList.remove('active'));
@@ -932,19 +957,18 @@
 
             if (category === 'model') {
                 selectedModel = value;
-                if (price !== null) {
-                    document.getElementById('phonePriceInput').value = price;
-                }
+                selectedModelKey = extra; // 'pro' أو 'promax'
+                updateModelPrice();
             } else if (category === 'storage') {
                 selectedStorage = value;
             } else if (category === 'color') {
                 selectedColor = value;
-                if (imgSrc) {
-                    currentImgSrc = imgSrc;
+                if (extra) {
+                    currentImgSrc = extra;
                     const mainImg = document.getElementById('mainProductImg');
                     mainImg.style.opacity = '0';
                     setTimeout(() => {
-                        mainImg.src = imgSrc;
+                        mainImg.src = extra;
                         mainImg.style.opacity = '1';
                     }, 150);
                 }
